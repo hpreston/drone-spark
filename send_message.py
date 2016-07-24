@@ -5,12 +5,15 @@ This is the Python Code for a drone.io plugin to send messages using Cisco Spark
 
 import drone
 import requests
+import os
 
 spark_urls = {
     "messages": "https://api.ciscospark.com/v1/messages",
     "rooms": "https://api.ciscospark.com/v1/rooms",
     "people": "https://api.ciscospark.com/v1/people"
 }
+
+drone_env = {}
 
 spark_headers = {}
 spark_headers["Content-type"] = "application/json"
@@ -57,6 +60,45 @@ def verify_roomId(roomId):
     else:
         return False
 
+def load_drone_env_variables():
+    '''
+    Bring in standard environment variables passed by Drone
+    '''
+
+    global drone_env
+
+    drone_env["DRONE"] = os.getenv("DRONE")
+    drone_env["DRONE_REPO"] = os.getenv("DRONE_REPO")
+    drone_env["DRONE_BRANCH"] = os.getenv("DRONE_BRANCH")
+    drone_env["DRONE_COMMIT"] = os.getenv("DRONE_COMMIT")
+    drone_env["DRONE_DIR"] = os.getenv("DRONE_DIR")
+    drone_env["DRONE_BUILD_NUMBER"] = os.getenv("DRONE_BUILD_NUMBER")
+    drone_env["DRONE_PULL_REQUEST"] = os.getenv("DRONE_PULL_REQUEST")
+    drone_env["DRONE_JOB_NUMBER"] = os.getenv("DRONE_JOB_NUMBER")
+    drone_env["DRONE_TAG"] = os.getenv("DRONE_TAG")
+
+    drone_env["CI"] = os.getenv("CI")
+    drone_env["CI_NAME"] = os.getenv("CI_NAME")
+    drone_env["CI_REPO"] = os.getenv("CI_REPO")
+    drone_env["CI_BRANCH"] = os.getenv("CI_BRANCH")
+    drone_env["CI_COMMIT"] = os.getenv("CI_COMMIT")
+    drone_env["CI_BUILD_NUMBER"] = os.getenv("CI_BUILD_NUMBER")
+    drone_env["CI_PULL_REQUEST"] = os.getenv("CI_PULL_REQUEST")
+    drone_env["CI_JOB_NUMBER"] = os.getenv("CI_JOB_NUMBER")
+    drone_env["CI_BUILD_DIR"] = os.getenv("CI_BUILD_DIR")
+    drone_env["CI_BUILD_URL"] = os.getenv("CI_BUILD_URL")
+    drone_env["CI_TAG"] = os.getenv("CI_TAG")
+
+def message_var_exchange(message):
+    '''
+    Until better templating is included, rough and dirty code to
+    swap $$VAR details with environment variables.
+    '''
+
+    for env in drone_env.items():
+        if env[1]: message = message.replace("$" + env[0], env[1])
+
+    return message
 
 def main():
     payload = drone.plugin.get_input()
@@ -65,6 +107,11 @@ def main():
     print("Drone Payload: ")
     print(payload)
     print(" ")
+
+    # Pull in Drone Environment Variables
+    load_drone_env_variables()
+    # Replace any $VAR references in the message
+    vargs["message"] = message_var_exchange(vargs["message"])
 
     # Prepare headers and message objects
     spark_headers["Authorization"] = "Bearer %s" % (vargs["auth_token"])
