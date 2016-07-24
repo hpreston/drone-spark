@@ -9,7 +9,7 @@ notify:
     image: hpreston/drone-spark
     auth_token: $$SPARK_TOKEN
     roomId: $$SPARK_ROOM
-    message: "Spark Plugin. Repo $$CI_REPO - Drone confirms $$CI_REPO build $$CI_BUILD_NUMBER completed successfully.\nhttp://github.com/$$CI_REPO/commit/$$COMMIT.\nhttp://$$DRONE_SERVER/$$CI_REPO/$$CI_BUILD_NUMBER."
+    message: "##Spark Plugin. \n Repo $$CI_REPO - Drone confirms $$CI_REPO build $$CI_BUILD_NUMBER completed successfully. \n http://github.com/$$CI_REPO/commit/$$COMMIT. \n http://$$DRONE_SERVER/$$CI_REPO/$$CI_BUILD_NUMBER."
     when:
       success: true
 
@@ -17,6 +17,6 @@ notify:
     image: hpreston/drone-spark
     auth_token: $$SPARK_TOKEN
     roomId: $$SPARK_ROOM
-    message: "Spark Plugin. Repo {{repo.full_name}} - Drone blames {{build.author}} for breaking build {{build.number}}.\nhttp://github.com/{{repo.full_name}}/commit/{{build.commit}}.\nhttp://$$DRONE_SERVER/{{repo.full_name}}/{{build.number}}."
+    message: "Spark Plugin. Repo {{repo.full_name}} - Drone blames {{build.author}} for breaking build {{build.number}}. \n http://github.com/{{repo.full_name}}/commit/{{build.commit}}. \n http://$$DRONE_SERVER/{{repo.full_name}}/{{build.number}}."
     when:
       success: false
