@@ -5,7 +5,7 @@ build:
 
 publish:
   docker:
-    repo: $$DOCKER_USERNAME/$$DOCKER_REPO
+    repo: $$DOCKER_REPO
     tag: "$${BRANCH##feature/}"
     username: $$DOCKER_USERNAME
     password: $$DOCKER_PASSWORD
@@ -33,3 +33,9 @@ notify:
         "text": "Repo {{repo.full_name}} - Drone blames {{build.author}} for breaking build {{build.number}}.\nhttp://github.com/{{repo.full_name}}/commit/{{build.commit}}.\nhttp://$$DRONE_SERVER/{{repo.full_name}}/{{build.number}}."
         {{/success}}
       }
+
+  spark:
+    image: hpreston/drone-spark
+    auth_token: $$SPARK_TOKEN
+    roomId: $$SPARK_ROOM
+    message: "Using spark plugin!!!"
