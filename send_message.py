@@ -99,7 +99,7 @@ def load_drone_env_variables(payload):
     drone_env["DRONE_BUILD_NUMBER"] = payload["build"]["number"]
     drone_env["DRONE_PULL_REQUEST"] = ""
     drone_env["DRONE_JOB_NUMBER"] = payload["build"]["number"]
-    drone_env["DRONE_TAG"] = payload["build"]["tag"]
+    # drone_env["DRONE_TAG"] = payload["build"]["tag"]
 
     drone_env["CI"] = True
     drone_env["CI_NAME"] = "drone"
@@ -111,7 +111,7 @@ def load_drone_env_variables(payload):
     drone_env["CI_JOB_NUMBER"] = payload["build"]["number"]
     drone_env["CI_BUILD_DIR"] = payload["workspace"]["path"]
     drone_env["CI_BUILD_URL"] = payload["repo"]["link_url"]
-    drone_env["CI_TAG"] = payload["build"]["tag"]
+    # drone_env["CI_TAG"] = payload["build"]["tag"]
 
 def message_var_exchange(message):
     '''
@@ -120,7 +120,7 @@ def message_var_exchange(message):
     '''
 
     for env in drone_env.items():
-        if env[1]: message = message.replace("$" + env[0], env[1])
+        if env[1]: message = message.replace("$" + env[0], str(env[1]))
 
     return message
 
@@ -166,7 +166,17 @@ def main():
             raise(LookupError("Requires valid roomId, roomName, or personEmail to be provided.  "))
 
     # Debug payload
-    debug_actions(roomId, str(payload))
+    # debug_actions(roomId, str(payload))
+    #
+    debug_message = {
+        "roomId": roomId,
+        "text": "Debug: \n \n " + str(payload)
+    }
+
+    response = requests.post(
+        spark_urls["messages"],
+        headers=spark_headers,
+        json=debug_message)
 
     spark_message["markdown"] = vargs["message"]
     # print(spark_message)
