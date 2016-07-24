@@ -1,0 +1,4 @@
+.idea/
+.vagrant/
+drone-secrets.yml
+testinput.json
