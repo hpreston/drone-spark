@@ -4,7 +4,7 @@ build:
     commands:
       - curl https://api.ciscospark.com/v1/messages -X POST -H "Authorization:Bearer $$SPARK_TOKEN" --data "roomId=$$SPARK_ROOM" --data "text=Repo $CI_REPO - Drone kicking off build $CI_BUILD_NUMBER"
       - pip install -r requirements.txt
-      - python send_message.py
+      - python send_message.py '{"vargs": {}}'
 
 publish:
   docker:
