@@ -2,8 +2,7 @@ build:
   build:
     image: python:2
     commands:
-      - curl https://api.ciscospark.com/v1/messages -X POST -H "Authorization:Bearer $$SPARK_TOKEN" --data "roomId=$$SPARK_ROOM" --data "text=Repo $CI_REPO - Drone kicking off build $CI_BUILD_NUMBER"
-      - pip install -r requirements.txt
+      - echo "Build Phase"
 
 publish:
   docker:
@@ -40,9 +39,14 @@ notify:
     image: hpreston/drone-spark
     auth_token: $$SPARK_TOKEN
     roomId: $$SPARK_ROOM
-    message: |
-      {{#success build.status}}
-      "Spark Plugin. Repo {{repo.full_name}} - Drone confirms {{repo.full_name}} build {{build.number}} completed successfully.\nhttp://github.com/{{repo.full_name}}/commit/{{build.commit}}.\nhttp://$$DRONE_SERVER/{{repo.full_name}}/{{build.number}}."
-      {{else}}
-      "Spark Plugin. Repo {{repo.full_name}} - Drone blames {{build.author}} for breaking build {{build.number}}.\nhttp://github.com/{{repo.full_name}}/commit/{{build.commit}}.\nhttp://$$DRONE_SERVER/{{repo.full_name}}/{{build.number}}."
-      {{/success}}
+    message: "Spark Plugin. Repo {{repo.full_name}} - Drone confirms {{repo.full_name}} build {{build.number}} completed successfully.\nhttp://github.com/{{repo.full_name}}/commit/{{build.commit}}.\nhttp://$$DRONE_SERVER/{{repo.full_name}}/{{build.number}}."
+    when:
+      success: true
+
+    spark:
+    image: hpreston/drone-spark
+    auth_token: $$SPARK_TOKEN
+    roomId: $$SPARK_ROOM
+    message: "Spark Plugin. Repo {{repo.full_name}} - Drone blames {{build.author}} for breaking build {{build.number}}.\nhttp://github.com/{{repo.full_name}}/commit/{{build.commit}}.\nhttp://$$DRONE_SERVER/{{repo.full_name}}/{{build.number}}."
+    when:
+      success: false

@@ -62,6 +62,10 @@ def main():
     payload = drone.plugin.get_input()
     vargs = payload["vargs"]
 
+    print("Drone Payload: ")
+    print(payload)
+    print(" ")
+
     # Prepare headers and message objects
     spark_headers["Authorization"] = "Bearer %s" % (vargs["auth_token"])
     spark_message = {}
