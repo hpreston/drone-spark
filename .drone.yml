@@ -16,6 +16,7 @@ publish:
 notify:
   spark:
     image: hpreston/drone-spark
+    pull: true
     auth_token: $$SPARK_TOKEN
     roomId: $$SPARK_ROOM
     message: "##Spark Plugin. \n Repo $CI_REPO - Drone confirms $CI_REPO build $CI_BUILD_NUMBER completed successfully. \n http://github.com/$CI_REPO/commit/$CI_COMMIT. \n http://$$DRONE_SERVER/$CI_REPO/$CI_BUILD_NUMBER."
@@ -24,6 +25,7 @@ notify:
 
   spark:
     image: hpreston/drone-spark
+    pull: true
     auth_token: $$SPARK_TOKEN
     roomId: $$SPARK_ROOM
     message: "Spark Plugin. Repo {{repo.full_name}} - Drone blames {{build.author}} for breaking build {{build.number}}. \n http://github.com/{{repo.full_name}}/commit/{{build.commit}}. \n http://$$DRONE_SERVER/{{repo.full_name}}/{{build.number}}."
