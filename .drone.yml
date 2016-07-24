@@ -12,6 +12,16 @@ publish:
     password: $$DOCKER_PASSWORD
     email: $$DOCKER_EMAIL
 
+  docker:
+    repo: $$DOCKER_REPO
+    tag: "latest"
+    username: $$DOCKER_USERNAME
+    password: $$DOCKER_PASSWORD
+    email: $$DOCKER_EMAIL
+    when:
+      branch: "master"
+
+
 
 notify:
   spark:
