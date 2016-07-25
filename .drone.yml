@@ -29,7 +29,10 @@ notify:
     pull: true
     auth_token: $$SPARK_TOKEN
     roomId: $$SPARK_ROOM
-    message: "##Build $$BUILD_NUMBER Successful. \n drone-spark has been built successfully. \n Drone Log: [Drone Link](http://$$DRONE_SERVER/$$DOCKER_REPO/$$BUILD_NUMBER). \n GitHub Log: [GitHub Link](https://github.com/$$DOCKER_REPO/commit/$$COMMIT) "
+    message: "##Build $$BUILD_NUMBER Successful.
+    drone-spark has been built successfully.
+    Drone Log: [Drone Link](http://$$DRONE_SERVER/$$DOCKER_REPO/$$BUILD_NUMBER).
+    GitHub Log: [GitHub Link](https://github.com/$$DOCKER_REPO/commit/$$COMMIT) "
     when:
       success: true
 
