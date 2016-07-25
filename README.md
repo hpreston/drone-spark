@@ -6,6 +6,10 @@ This plugin will allow you to send notifications using [Cisco Spark](http://cisc
 
 # Usage Examples
 
+## .drone.yml
+
+See [DOCS.md](DOCS.md) for how to configure and use the plugin.
+
 ## Python
 
 ```
@@ -86,33 +90,9 @@ docker run -i hpreston/drone-spark <<EOF
 EOF
 ```
 
-## .drone.yml
+# Roadmap and Plans
 
-```
-# Basic Option
-notify:
-  spark:
-    image: hpreston/drone-spark
-    auth_token: XXXXXXXXX
-    roomId: XXXXXXXXX
-    message: "Sample message"
+This plugin is in active development and has the following features planned
 
-# Room Name Option
-notify:
-  spark:
-    image: hpreston/drone-spark
-    auth_token: XXXXXXXXX
-    roomName: XXXXXXXXX
-    message: "Sample message"
-
-# Send to Email Option
-# Basic Option
-notify:
-  spark:
-    image: hpreston/drone-spark
-    auth_token: XXXXXXXXX
-    personEmail: XXXXXXXXX
-    message: "Sample message"
-
-
-```
+* Support for handlebar templating like other notification templates
+* Support for referencing the environment variables used by Drone
