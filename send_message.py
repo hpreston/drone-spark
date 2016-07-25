@@ -58,6 +58,38 @@ def verify_roomId(roomId):
     else:
         return False
 
+def standard_message(payload):
+    '''
+    This will create a standard notification message.
+    '''
+    status = payload["build"]["status"]
+    if status == "success":
+        message = "#Build for %s is Successful \n" % (payload["repo"]["full_name"])
+        message = message + "Build author: [%s](%s) \n" % (payload["build"]["author"], payload["build"]["author_email"])
+    else:
+        message = "#Build for %s FAILED!!!" % (payload["repo"]["full_name"])
+        message = message + "Drone blames build author: [%s](%s) \n" % (payload["build"]["author"], payload["build"]["author_email"])
+
+    message = message + "##Build Details \n"
+    message = message + "* [Build Log](%s/%s/%s)\n" % (payload["system"]["link_url"], payload["repo"]["full_name"], payload["build"]["number"])
+    message = message + "* [Commit Log](%s)\n" % (payload["build"]["link_url"])
+    message = message + "* Branch: %s\n" % (payload["build"]["branch"])
+    message = message + "* Commit Message: %s\n" % (payload["build"]["message"])
+
+    return message
+
+def send_message(message_data, message_text):
+
+    message_data["markdown"] = message_text
+
+    response = requests.post(
+        spark_urls["messages"],
+        headers = spark_headers,
+        json = message_data
+    )
+
+    return response
+
 def main():
     payload = drone.plugin.get_input()
     vargs = payload["vargs"]
@@ -78,21 +110,34 @@ def main():
         else:
             raise(LookupError("Requires valid roomId, roomName, or personEmail to be provided.  "))
 
-    spark_message["markdown"] = vargs["message"]
-    # print(spark_message)
-
-    # Send message through Spark
-    response = requests.post(
-        spark_urls["messages"],
-        headers = spark_headers,
-        json = spark_message)
-    # print(response.json())
-    # print(str(response.status_code))
-
-    # If the message posting didn't work correctly...
-    if response.status_code != 200:
-        print(response.json()["message"])
+    # Send Standard message
+    standard_notify = send_message(spark_message, standard_message(payload))
+    if standard_notify.status_code != 200:
+        print(standard_notify.json()["message"])
         raise(SystemExit("Something went wrong..."))
+
+    # If there was a message sent from .drone.yml
+    if "message" in vargs.keys():
+        custom_notify = send_message(spark_message, vargs["message"])
+        if custom_notify.status_code != 200:
+            print(custom_notify.json()["message"])
+            raise (SystemExit("Something went wrong..."))
+
+    # spark_message["markdown"] = vargs["message"]
+    # # print(spark_message)
+    #
+    # # Send message through Spark
+    # response = requests.post(
+    #     spark_urls["messages"],
+    #     headers = spark_headers,
+    #     json = spark_message)
+    # # print(response.json())
+    # # print(str(response.status_code))
+    #
+    # # If the message posting didn't work correctly...
+    # if response.status_code != 200:
+    #     print(response.json()["message"])
+    #     raise(SystemExit("Something went wrong..."))
 
 
 if __name__ == "__main__":
