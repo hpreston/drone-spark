@@ -65,15 +65,16 @@ def standard_message(payload):
     status = payload["build"]["status"]
     if status == "success":
         message = "##Build for %s is Successful \n" % (payload["repo"]["full_name"])
-        message = message + "Build author: [%s](%s) \n" % (payload["build"]["author"], payload["build"]["author_email"])
+        message = message + "**Build author:** [%s](%s) \n" % (payload["build"]["author"], payload["build"]["author_email"])
     else:
-        message = "#Build for %s FAILED!!!" % (payload["repo"]["full_name"])
-        message = message + "Drone blames build author: [%s](%s) \n" % (payload["build"]["author"], payload["build"]["author_email"])
+        message = "#Build for %s FAILED!!! \n" % (payload["repo"]["full_name"])
+        message = message + "**Drone blames build author:** [%s](%s) \n" % (payload["build"]["author"], payload["build"]["author_email"])
 
     message = message + "###Build Details \n"
     message = message + "* [Build Log](%s/%s/%s)\n" % (payload["system"]["link_url"], payload["repo"]["full_name"], payload["build"]["number"])
     message = message + "* [Commit Log](%s)\n" % (payload["build"]["link_url"])
     message = message + "* **Branch:** %s\n" % (payload["build"]["branch"])
+    message = message + "* **Event:** %s\n" % (payload["build"]["event"])
     message = message + "* **Commit Message:** %s\n" % (payload["build"]["message"])
 
     return message

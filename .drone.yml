@@ -21,8 +21,6 @@ publish:
     when:
       branch: "master"
 
-
-
 notify:
   spark:
     image: hpreston/drone-spark:latest
