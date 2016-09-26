@@ -26,7 +26,7 @@ notify:
     image: hpreston/drone-spark:latest
     pull: true
     auth_token: $$SPARK_TOKEN
-    roomId: $$SPARK_ROOM
+    roomName: "$$SPARK_ROOM_NAME"
     message: "Great Job!!!"
     when:
       success: true
@@ -35,7 +35,7 @@ notify:
     image: hpreston/drone-spark:latest
     pull: true
     auth_token: $$SPARK_TOKEN
-    roomId: $$SPARK_ROOM
+    roomName: "$$SPARK_ROOM_NAME"
     message: "Poor form... you should be ashamed..."
     when:
       success: false
