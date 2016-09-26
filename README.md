@@ -18,7 +18,7 @@ See [DOCS.md](DOCS.md) for how to configure and use the plugin.
 python send_message.py <<EOF
 {
     "system": {
-        "link": "http://drone.mycompany.com"
+        "link_url": "http://drone.mycompany.com"
     },
     "repo": {
         "owner": "octocat",
@@ -34,7 +34,10 @@ python send_message.py <<EOF
         "commit": "436b7a6e2abaddfd35740527353e78a227ddcb2c",
         "ref": "refs/heads/master",
         "author": "octocat",
-        "author_email": "octocat@github.com"
+        "author_email": "octocat@github.com", 
+        "link_url": "https://github.com/octocat/hello-world",
+        "message": "Testing...",
+        "status": "success"
     },
     "workspace": {
         "root": "/drone/src",
@@ -44,9 +47,9 @@ python send_message.py <<EOF
         }
     },
     "vargs": {
-        "auth_token": "ZmRmY2..",
-        "roomId": "Y2lzY...",
-        "message": "# Sending Spark Message \n Using Markdown!!!"
+        "message": "# Sending Spark Message \n Using Markdown!!!",
+		"auth_token": "ZmRm....",
+		"roomName": "ROOM NAME"
     }
 }
 EOF
@@ -58,7 +61,7 @@ EOF
 docker run -i hpreston/drone-spark <<EOF
 {
     "system": {
-        "link": "http://drone.mycompany.com"
+        "link_url": "http://drone.mycompany.com"
     },
     "repo": {
         "owner": "octocat",
@@ -74,7 +77,10 @@ docker run -i hpreston/drone-spark <<EOF
         "commit": "436b7a6e2abaddfd35740527353e78a227ddcb2c",
         "ref": "refs/heads/master",
         "author": "octocat",
-        "author_email": "octocat@github.com"
+        "author_email": "octocat@github.com", 
+        "link_url": "https://github.com/octocat/hello-world",
+        "message": "Testing...",
+        "status": "success"
     },
     "workspace": {
         "root": "/drone/src",
@@ -84,9 +90,9 @@ docker run -i hpreston/drone-spark <<EOF
         }
     },
     "vargs": {
-        "auth_token": "ZmRmY2..",
-        "roomId": "Y2lzY...",
-        "message": "# Sending Spark Message \n Using Markdown!!!"
+        "message": "# Sending Spark Message \n Using Markdown!!!",
+		"auth_token": "ZmRm....",
+		"roomName": "ROOM NAME"
     }
 }
 EOF

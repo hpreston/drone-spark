@@ -33,9 +33,9 @@ def get_roomId(payload):
             headers = spark_headers
         )
         rooms = response.json()["items"]
-        # print("Number Rooms: " + str(len(rooms)))
+        #print("Number Rooms: " + str(len(rooms)))
         for room in rooms:
-            # print("Room: " + room["title"])
+            #print("Room: " + room["title"])
             if payload["vargs"]["roomName"] == room["title"]:
                 return room["id"]
 
