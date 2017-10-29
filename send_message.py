@@ -129,11 +129,11 @@ def main():
                 }
 
     # Debug Info
-    print("destination details:")
-    print(destination)
-    print("build_info details: ")
-    print(build_info)
-    print(" ")
+    # print("destination details:")
+    # print(destination)
+    # print("build_info details: ")
+    # print(build_info)
+    # print(" ")
 
 
 
