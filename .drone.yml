@@ -23,7 +23,7 @@ publish:
 
 notify:
   spark:
-    image: hpreston/drone-spark:latest
+    image: hpreston/drone-spark:0.4
     pull: true
     auth_token: $$SPARK_TOKEN
     roomName: "$$SPARK_ROOM_NAME"
@@ -32,7 +32,7 @@ notify:
       success: true
 
   spark:
-    image: hpreston/drone-spark:latest
+    image: hpreston/drone-spark:0.4
     pull: true
     auth_token: $$SPARK_TOKEN
     roomName: "$$SPARK_ROOM_NAME"
