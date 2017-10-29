@@ -170,7 +170,8 @@ def main():
             print(custom_notify.text)
             raise (SystemExit("Something went wrong..."))
 
-
+    # Print complete message
+    print("Message sent successfully.")
 
 if __name__ == "__main__":
     # Debug
