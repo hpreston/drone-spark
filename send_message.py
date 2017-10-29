@@ -68,10 +68,10 @@ def standard_message(build_info):
     repo = "{}/{}".format(build_info["repo_owner"], build_info["repo_name"])
     if status == "success":
         message = "##Build for %s is Successful \n" % (repo)
-        message = message + "**Build author:** [%s](%s) \n" % (build_info["commit_author"],build_info["commit_author_email"])
+        message = message + "**Build author:** %s <%s> \n" % (build_info["commit_author"],build_info["commit_author_email"])
     else:
         message = "#Build for %s FAILED!!! \n" % (repo)
-        message = message + "**Drone blames build author:** [%s](%s) \n" % (build_info["commit_author"],build_info["commit_author_email"])
+        message = message + "**Drone blames build author:** %s <%s> \n" % (build_info["commit_author"],build_info["commit_author_email"])
 
     message = message + "###Build Details \n"
     message = message + "* [Build Log](%s)\n" % (build_info["build_link"])
@@ -157,7 +157,7 @@ def main():
     # Send Standard message
     standard_notify = send_message(spark_message, standard_message(build_info))
     if standard_notify.status_code != 200:
-        print(standard_notify.text)
+        print(standard_notify)
         raise(SystemExit("Something went wrong..."))
 
     # If there was a message sent from .drone.yml
