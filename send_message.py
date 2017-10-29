@@ -68,17 +68,17 @@ def standard_message(build_info):
     repo = "{}/{}".format(build_info["repo_owner"], build_info["repo_name"])
     if status == "success":
         message = "##Build for %s is Successful \n" % (repo)
-        message = message + "**Build author:** %s \n" % (build_info["commit_author"])
+        message = message + "**Build author:** [%s](%s) \n" % (build_info["commit_author"],build_info["commit_author_email"])
     else:
         message = "#Build for %s FAILED!!! \n" % (repo)
-        message = message + "**Drone blames build author:** %s \n" % (build_info["commit_author"])
+        message = message + "**Drone blames build author:** [%s](%s) \n" % (build_info["commit_author"],build_info["commit_author_email"])
 
     message = message + "###Build Details \n"
     message = message + "* [Build Log](%s)\n" % (build_info["build_link"])
-    message = message + "* [Commit Log](%s)\n" % (build_info["commit_ref"])
+    message = message + "* [Commit Log](%s)\n" % (build_info["commit_log"])
     message = message + "* **Branch:** %s\n" % (build_info["commit_branch"])
     message = message + "* **Event:** %s\n" % (build_info["build_event"])
-    # message = message + "* **Commit Message:** %s\n" % (build_info[""])
+    message = message + "* **Commit Message:** %s\n" % (build_info["commit_message"])
 
     return message
 
@@ -115,6 +115,7 @@ def main():
                     "commit_ref": os.getenv("DRONE_COMMIT_REF"),
                     "commit_branch": os.getenv("DRONE_COMMIT_BRANCH"),
                     "commit_author": os.getenv("DRONE_COMMIT_AUTHOR"),
+                    "commit_author_email": os.getenv("DRONE_COMMIT_AUTHOR_EMAIL"),
                     "build_event": os.getenv("DRONE_BUILD_EVENT"),
                     "build_number": os.getenv("DRONE_BUILD_NUMBER"),
                     "build_status": os.getenv("DRONE_BUILD_STATUS"),
@@ -123,6 +124,8 @@ def main():
                     "build_created": os.getenv("DRONE_BUILD_CREATED"),
                     "tag": os.getenv("DRONE_TAG"),
                     "job_started": os.getenv("DRONE_JOB_STARTED")
+                    "commit_message": os.getenv("CI_COMMIT_MESSAGE")
+                    "commit_log": os.getenv("CI_BUILD_LINK")
                 }
 
     # Debug Info
@@ -169,6 +172,6 @@ def main():
 
 if __name__ == "__main__":
     # Debug
-    print(os.environ)
+    # print(os.environ)
 
     main()
