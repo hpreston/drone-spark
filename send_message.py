@@ -145,6 +145,8 @@ def main():
     try:
         # First look for a valid roomId or roomName
         roomId = get_roomId(destination)
+        # Debug
+        # print("roomId = {}".format(roomId))
         spark_message["roomId"] = roomId
     except LookupError:
         # See if a personEmail was provided
