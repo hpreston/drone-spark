@@ -3,7 +3,6 @@
 This is the Python Code for a drone.io plugin to send messages using Cisco Spark
 '''
 
-import drone
 import requests
 import os
 
@@ -21,13 +20,11 @@ def get_roomId(destination):
     Determine the roomId to send the message to.
     '''
 
-    # If an explict roomId was provided as a varg, verify it's a valid roomId
-    # if ("roomId" in destination.keys()):
+    # If an explict roomId was provided , verify it's a valid roomId
     if (destination["roomId"]):
         if verify_roomId(destination["roomId"]):
             return destination["roomId"]
     # If a roomName is provided, send to room with that title
-    # elif ("roomName" in destination.keys()):
     elif (destination["roomName"]):
         # Try to find room based on room name
         response = requests.get(
@@ -95,11 +92,7 @@ def send_message(message_data, message_text):
     return response
 
 def main():
-    # payload = drone.plugin.get_input()
-    # vargs = payload["vargs"]
-
     # Retrieve Plugin Parameters
-    # auth_token = os.getenv("AUTH_TOKEN")
     auth_token = os.getenv("SPARK_TOKEN")
     destination = {
                     "roomName": os.getenv("PLUGIN_ROOMNAME"),
@@ -135,8 +128,6 @@ def main():
     # print(build_info)
     # print(" ")
 
-
-
     # Prepare headers and message objects
     spark_headers["Authorization"] = "Bearer %s" % (auth_token)
     spark_message = {}
@@ -150,7 +141,6 @@ def main():
         spark_message["roomId"] = roomId
     except LookupError:
         # See if a personEmail was provided
-        # if "personEmail" in destination.keys():
         if destination["personEmail"]:
             spark_message["toPersonEmail"] = destination["personEmail"]
         else:
@@ -163,7 +153,6 @@ def main():
         raise(SystemExit("Something went wrong..."))
 
     # If there was a message sent from .drone.yml
-    # if "message" in vargs.keys():
     if message:
         custom_notify = send_message(spark_message, message)
         if custom_notify.status_code != 200:
