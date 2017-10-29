@@ -123,8 +123,8 @@ def main():
                     "build_started": os.getenv("DRONE_BUILD_STARTED"),
                     "build_created": os.getenv("DRONE_BUILD_CREATED"),
                     "tag": os.getenv("DRONE_TAG"),
-                    "job_started": os.getenv("DRONE_JOB_STARTED")
-                    "commit_message": os.getenv("CI_COMMIT_MESSAGE")
+                    "job_started": os.getenv("DRONE_JOB_STARTED"),
+                    "commit_message": os.getenv("CI_COMMIT_MESSAGE"),
                     "commit_log": os.getenv("CI_BUILD_LINK")
                 }
 
@@ -157,7 +157,7 @@ def main():
     # Send Standard message
     standard_notify = send_message(spark_message, standard_message(build_info))
     if standard_notify.status_code != 200:
-        print(standard_notify.json()["message"])
+        print(standard_notify.text)
         raise(SystemExit("Something went wrong..."))
 
     # If there was a message sent from .drone.yml
@@ -165,7 +165,7 @@ def main():
     if message:
         custom_notify = send_message(spark_message, message)
         if custom_notify.status_code != 200:
-            print(custom_notify.json()["message"])
+            print(custom_notify.text)
             raise (SystemExit("Something went wrong..."))
 
 
