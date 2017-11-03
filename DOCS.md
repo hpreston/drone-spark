@@ -49,10 +49,13 @@ pipeline:
 
 To send the destination via secrets, use this format.  *Note: Only one of the three destination types is required.*
 
+***Note: Due to a bug in Drone 0.7 plugins need at least one parameter set to run.  This will be fixed in 0.8**
+
 ```yaml
 pipeline:
   spark:
     image: hpreston/drone-spark:0.7
+    message: Great Build!
     secrets: [ SPARK_TOKEN, ROOMNAME, PERSONEMAIL, ROOMID ]
 ```
 
