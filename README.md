@@ -53,6 +53,7 @@ docker run --rm \
   -e DRONE_TAG=1.0.0 \
   -e CI_COMMIT_MESSAGE="Great Commit" \
   -e CI_BUILD_LINK=http://github.com/octocat/hello-world/compare/775...5562 \
+  -e DEBUG=true \
   hpreston/drone-spark
 ```
 

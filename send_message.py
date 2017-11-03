@@ -94,11 +94,25 @@ def send_message(message_data, message_text):
 def main():
     # Retrieve Plugin Parameters
     auth_token = os.getenv("SPARK_TOKEN")
-    destination = {
-                    "roomName": os.getenv("PLUGIN_ROOMNAME"),
-                    "roomId": os.getenv("PLUGIN_ROOMID"),
-                    "personEmail": os.getenv("PLUGIN_PERSONEMAIL")
-                  }
+
+    # Is DEBUG requested
+    debug = os.getenv("PLUGIN_DEBUG")
+
+    # Check to see if ROOMID, ROOMNAME, or PERSONEMAIL were sent as Secrets
+    destination_secrets = {
+                    "roomName": os.getenv("ROOMNAME"),
+                    "roomId": os.getenv("ROOMID"),
+                    "personEmail": os.getenv("PERSONEMAIL")
+                    }
+    if any(destination_secrets.values()):
+        destination = destination_secrets
+    else:
+        destination = {
+                        "roomName": os.getenv("PLUGIN_ROOMNAME"),
+                        "roomId": os.getenv("PLUGIN_ROOMID"),
+                        "personEmail": os.getenv("PLUGIN_PERSONEMAIL")
+                      }
+
     message = os.getenv("PLUGIN_MESSAGE")
 
     build_info = {
@@ -122,11 +136,12 @@ def main():
                 }
 
     # Debug Info
-    # print("destination details:")
-    # print(destination)
-    # print("build_info details: ")
-    # print(build_info)
-    # print(" ")
+    if debug:
+        print("destination details:")
+        print(destination)
+        print("build_info details: ")
+        print(build_info)
+        print(" ")
 
     # Prepare headers and message objects
     spark_headers["Authorization"] = "Bearer %s" % (auth_token)
@@ -136,8 +151,9 @@ def main():
     try:
         # First look for a valid roomId or roomName
         roomId = get_roomId(destination)
-        # Debug
-        # print("roomId = {}".format(roomId))
+        if debug:
+            # Debug
+            print("roomId = {}".format(roomId))
         spark_message["roomId"] = roomId
     except LookupError:
         # See if a personEmail was provided
@@ -148,6 +164,11 @@ def main():
 
     # Send Standard message
     standard_notify = send_message(spark_message, standard_message(build_info))
+    if debug:
+        # Debug Info
+        print("Message Response")
+        print(standard_notify)
+        print(standard_notify.text)
     if standard_notify.status_code != 200:
         print(standard_notify)
         raise(SystemExit("Something went wrong..."))
