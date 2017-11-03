@@ -83,3 +83,4 @@ drone7 secret add --name ROOMNAME --value "Build Info" --repository myorg/myproj
 * **message** - *Optional* Additional custom message
 * **SPARK_TOKEN** - Authentication Token for Cisco Spark provided via Drone Secret
 * **debug** - Optional plugin parameter.  If set the plugin will print out informational details.  
+* **spark_protocol** - Optional plugin parameter.  Specify http or https for Spark API connections.  HTTPS is default
