@@ -6,10 +6,15 @@ This is the Python Code for a drone.io plugin to send messages using Cisco Spark
 import requests
 import os
 
+try:
+    protocol = os.getenv("PLUGIN_PROTOCOL")
+except:
+    protocol = "https"
+
 spark_urls = {
-    "messages": "https://api.ciscospark.com/v1/messages",
-    "rooms": "https://api.ciscospark.com/v1/rooms",
-    "people": "https://api.ciscospark.com/v1/people"
+    "messages": "{}://api.ciscospark.com/v1/messages".format(protocol),
+    "rooms": "{}://api.ciscospark.com/v1/rooms".format(protocol),
+    "people": "{}://api.ciscospark.com/v1/people".format(protocol)
 }
 
 spark_headers = {}
